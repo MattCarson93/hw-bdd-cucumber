@@ -192,7 +192,6 @@ Then /^the "([^"]*)" field should have the error "([^"]*)"$/ do |field, error_me
     end
   end
 end
-
 Then /^the "([^"]*)" field should have no error$/ do |field|
   element = find_field(field)
   classes = element.find(:xpath, '..')[:class].split(' ')
