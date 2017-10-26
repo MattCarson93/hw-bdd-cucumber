@@ -39,17 +39,24 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   # HINT: use String#split to split up the rating_list, then
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
-
-  uncheck.each do |u|
-    uncheck(u)
-  end
-  rl= rating_list.split()
-  rl.each do |rating|
-    check(rating)
+  ratings = rating_list.split(/,/)
+  ratings.each do |rating|
+    if (uncheck.nil?)
+      check("ratings_#{rating}")
+    elsif
+      uncheck("ratings_#{rating}")
+    end
   end
   #fail "Unimplemented"
 end  
 
+Then /I should only have the following ratings: (.*)/ do |rating_list|
+  ratings = rating_list.split(/,/)
+  ratings.each do |r|
+    regex = Regexp.new("(^#{r}$)")
+    page.should_not have_xpath('//td',:text=>regex)
+  end
+end
 
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
